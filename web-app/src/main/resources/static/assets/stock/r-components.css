@@ -1,0 +1,102 @@
+
+
+a.button, button.action-button {
+    padding: 6px 12px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+a.button:hover, button.action-button:hover {
+    background-color: #2980b9;
+}
+
+button.delete-button {
+    padding: 6px 12px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.delete-button:hover {
+    background-color: #c0392b;
+}
+
+ul.pagination {
+    list-style: none;
+    display: flex;
+    gap: 5px;
+    padding: 0;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+ul.pagination li a {
+    padding: 6px 10px;
+    border: 1px solid #3498db;
+    color: #3498db;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+ul.pagination li.active a {
+    background-color: #3498db;
+    color: white;
+}
+
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.search-form {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.search-form input[type="text"] {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 250px;
+}
+
+.search-form button {
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #2980b9;
+}
+
+.status-tag {
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: white;
+}
+
+.status-active {
+    background-color: #27ae60;
+}
+
+.status-inactive {
+    background-color: #e74c3c;
+}

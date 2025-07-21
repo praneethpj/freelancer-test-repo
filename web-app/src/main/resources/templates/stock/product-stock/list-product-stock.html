@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/assets/stock/r-table.css}">
+    <link rel="stylesheet" th:href="@{/assets/stock/r-components.css}">
+    <script th:src="@{/assets/stock/product-stock.js}" defer></script>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="header-actions">
+        <h3>Product Stocks</h3>
+        <div style="display: inline-block; margin-left: 12px;">
+            <wa-button-group label="Import Actions">
+                <wa-dropdown-item
+                        class="button"
+                        style="background-color: #3498db; color: #e2e8f0"
+                        th:onclick="|window.location.href='@{/product-stock/new}'|">
+                    <i class="fas fa-plus"></i> Create New Manually
+                </wa-dropdown-item>
+
+                <wa-dropdown placement="bottom-end">
+                    <wa-button slot="trigger">
+                        Import <wa-icon name="chevron-down" label="More options"></wa-icon>
+                    </wa-button>
+
+                    <wa-dropdown-item onclick="downloadSampleCsv()">
+                        Download Sample
+                    </wa-dropdown-item>
+
+                    <wa-dropdown-item onclick="triggerFileInput()">
+                        Import CSV and Upload
+                    </wa-dropdown-item>
+                </wa-dropdown>
+            </wa-button-group>
+
+            <form id="importForm" th:action="@{/product-stock/import}" method="post" enctype="multipart/form-data" style="display: inline;">
+                <input
+                        type="file"
+                        id="csvFileInput"
+                        name="file"
+                        accept=".csv"
+                        style="display: none;"
+                        required
+                        onchange="this.form.submit()" />
+            </form>
+
+            <div id="importProgressBar" style="display: none; margin-top: 12px; width: 200px;">
+                <wa-progress-bar indeterminate></wa-progress-bar>
+            </div>
+        </div>
+
+    </div>
+    <div th:if="${not #lists.isEmpty(productStocks)}">
+    <!-- Search form -->
+    <form th:action="@{/product-stock/list}" method="get" class="search-form">
+        <input type="text" name="keyword" placeholder="Search by name..." th:value="${keyword}"/>
+        <button type="submit"><i class="fas fa-search"></i> Search</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Count</th>
+            <th>Item Type</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${productStocks}">
+            <td th:text="${product.id}">1</td>
+            <td th:text="${product.name}">Product Name</td>
+            <td th:text="${product.description}">Description</td>
+            <td th:text="${product.count}">10</td>
+            <td th:text="${product.itemType?.name}">Item Type</td>
+            <td>
+                <!-- Edit Button -->
+                <wa-button size="small"
+                           variant="neutral"
+                           th:href="@{'/product-stock/edit/' + ${product.id}}"
+                           style="margin-right: 6px;">
+                    <i class="fas fa-edit" style="margin-right: 4px;"></i>
+                </wa-button>
+
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <ul class="pagination">
+        <li th:if="${currentPage > 0}">
+            <a th:href="@{/product-stock/list(page=${currentPage - 1}, keyword=${keyword})}">&laquo; Prev</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i} == ${currentPage} ? 'active'">
+            <a th:href="@{/product-stock/list(page=${i}, keyword=${keyword})}" th:text="${i + 1}">1</a>
+        </li>
+        <li th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/product-stock/list(page=${currentPage + 1}, keyword=${keyword})}">Next &raquo;</a>
+        </li>
+    </ul>
+    </div>
+    <div th:if="${#lists.isEmpty(itemTypes)}" th:value="#{stock.productType.notfound}" style="margin-top: 20px; text-align: center; color: gray;">
+        No product found. Please add new.
+    </div>
+
+</main>
+</body>
+</html>

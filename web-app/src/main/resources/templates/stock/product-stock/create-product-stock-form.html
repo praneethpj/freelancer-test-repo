@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+
+    <link rel="stylesheet" th:href="@{/assets/stock/r-components.css}">
+    <title>Create Product Stock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<main layout:fragment="content">
+    <wa-breadcrumb style="margin-bottom: var(--wa-space-lg);">
+        <wa-breadcrumb-item th:href="@{/templates/dashboard}" th:text="#{stock.dashboard}">Dashboard</wa-breadcrumb-item>
+        <wa-breadcrumb-item th:href="@{/product-stock/list}" th:text="#{stock.productstock}">Product Stocks</wa-breadcrumb-item>
+        <wa-breadcrumb-item th:text="#{stock.productstock.create}">Create Product Stock</wa-breadcrumb-item>
+    </wa-breadcrumb>
+
+    <wa-card style="margin-bottom: var(--wa-space-m);">
+        <div style="padding: var(--wa-space-xl)">
+
+            <form th:action="@{/product-stock}" th:object="${productStockPayload}" method="post">
+
+                <label for="itemTypeId">Item Type</label>
+                <select th:field="*{itemTypeId}" required>
+                    <option th:each="itemType : ${itemTypes}"
+                            th:value="${itemType.id}"
+                            th:text="${itemType.name}"></option>
+                </select>
+
+                <label for="name">Name</label>
+                <input type="text" th:field="*{name}" placeholder="Name" required/>
+
+                <label for="description">Description</label>
+                <input type="text" th:field="*{description}" placeholder="Description"/>
+
+                <label for="count">Count</label>
+                <input type="number" th:field="*{count}" placeholder="Count" required/>
+
+
+
+
+           <div style="padding-top: 20px">
+               <wa-button type="submit"
+                          variant="success"
+               >
+                   Save
+               </wa-button>
+           </div>
+            </form>
+
+
+
+        </div>
+    </wa-card>
+</main>
+</body>
+</html>

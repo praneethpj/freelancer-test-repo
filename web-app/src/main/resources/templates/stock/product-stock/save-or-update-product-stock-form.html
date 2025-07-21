@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+
+    <link rel="stylesheet" th:href="@{/assets/stock/r-components.css}">
+    <title th:text="${editing} ? 'Update Product Stock' : 'Create Product Stock'">Create Product Stock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<main layout:fragment="content">
+    <wa-breadcrumb style="margin-bottom: var(--wa-space-lg);">
+        <wa-breadcrumb-item th:href="@{/templates/dashboard}">Dashboard</wa-breadcrumb-item>
+        <wa-breadcrumb-item th:href="@{/product-stock/list}">Product Stocks</wa-breadcrumb-item>
+        <wa-breadcrumb-item th:text="${editing} ? 'Update Product Stock' : 'Create Product Stock'">
+            Create Product Stock
+        </wa-breadcrumb-item>
+    </wa-breadcrumb>
+
+    <wa-card style="margin-bottom: var(--wa-space-m);">
+        <div style="padding: var(--wa-space-xl)">
+
+            <form th:action="${editing} ? @{'/product-stock/update/' + ${productStockPayload.id}} : @{/product-stock}"
+                  th:object="${productStockPayload}"
+                  method="post"
+                  class="wa-grid"
+                  style="--min-column-size: 100%; max-width: 100%; gap: var(--wa-space-xl);">
+
+
+                <input type="hidden" name="id" th:value="*{id}" />
+                <div>
+                    <wa-select name="itemTypeId"
+                               th:field="*{itemTypeId}"
+                               label="Item Type"
+                               required>
+                        <wa-option th:each="type : ${itemTypes}"
+                                   th:value="${type.id}"
+                                   th:text="${type.name}"
+                                   th:selected="${type.id == productStockPayload.itemTypeId}">ItemType</wa-option>
+                    </wa-select>
+                </div>
+
+                <div>
+                    <wa-input name="name"
+                              th:field="*{name}"
+                              th:value="${productStockPayload.name}"
+                              placeholder="Enter product name"
+                              label="Product Name"
+                              required>
+                        <wa-icon name="label" slot="start"></wa-icon>
+                    </wa-input>
+                </div>
+
+                <div>
+                    <wa-input name="description"
+                              th:field="*{description}"
+                              th:value="${productStockPayload.description}"
+                              placeholder="Enter product description"
+                              label="Description">
+                        <wa-icon name="description" slot="start"></wa-icon>
+                    </wa-input>
+                </div>
+
+                <div>
+                    <wa-input type="number"
+                              name="count"
+                              th:field="*{count}"
+                              th:value="${productStockPayload.count}"
+                              placeholder="Enter quantity"
+                              label="Count"
+                              required>
+                        <wa-icon name="hash" slot="start"></wa-icon>
+                    </wa-input>
+                </div>
+
+                <div>
+                    <wa-button type="submit"
+                               variant="success"
+                               th:text="${editing} ? 'Update' : 'Save'">
+                        Save
+                    </wa-button>
+                </div>
+
+            </form>
+
+        </div>
+    </wa-card>
+</main>
+
+<th:block layout:fragment="scripts">
+    <!-- Add page-specific JS here if needed -->
+</th:block>
+</body>
+</html>

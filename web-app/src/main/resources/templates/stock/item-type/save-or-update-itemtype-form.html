@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+
+    <link rel="stylesheet" th:href="@{/assets/stock/r-components.css}">
+    <title>Update Item Type</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<main layout:fragment="content">
+    <wa-breadcrumb style="margin-bottom: var(--wa-space-lg);">
+        <wa-breadcrumb-item th:href="@{/templates/dashboard}">Dashboard</wa-breadcrumb-item>
+        <wa-breadcrumb-item th:href="@{/item-type/list}">Item Types</wa-breadcrumb-item>
+        <wa-breadcrumb-item th:text="${editing} ? 'Update Item Type' : 'Create Item Type'">
+            Create Item Type
+        </wa-breadcrumb-item>
+    </wa-breadcrumb>
+
+
+    <wa-card style="margin-bottom: var(--wa-space-m); ">
+
+    <div style="padding: var(--wa-space-xl)">
+
+            <form th:action="${editing} ? @{'/item-type/update/' + ${itemTypePayload.itemTypeId}} : @{/item-type}"
+                  method="post"
+                  class="wa-grid"
+                  style="--min-column-size: 100%; max-width: 100%; gap: var(--wa-space-xl);">
+
+
+                <input type="hidden" name="itemTypeId" th:value="${itemTypePayload.itemTypeId}" />
+
+
+                <div>
+                    <wa-select required label="Type" name="type">
+                        <wa-option value="Normal"
+                                   th:selected="${itemTypePayload.type == 'Normal'}"
+                                   th:text="#{stock.itemType.kind.type1}">Normal</wa-option>
+                        <wa-option value="Digital"
+                                   th:selected="${itemTypePayload.type == 'Digital'}"
+                                   th:text="#{stock.itemType.kind.type2}">Digital</wa-option>
+                    </wa-select>
+                </div>
+
+
+                <div>
+                    <wa-input name="name"
+                              th:value="${itemTypePayload.name}"
+                              th:placeholder="#{stock.itemType.name.placeholder}"
+                              th:label="#{stock.itemType.name.label}"
+                              required>
+                        <wa-icon name="label" slot="start"></wa-icon>
+                    </wa-input>
+                </div>
+
+
+                <div>
+                    <wa-switch name="activate"
+                               th:checked="${itemTypePayload.activate}"
+                               th:label="#{stock.itemType.active.label}">
+                        <span th:text="${itemTypePayload.activate} ? #{stock.itemType.active.enabled} : #{stock.itemType.active.disabled}">Switch</span>
+                    </wa-switch>
+                </div>
+
+
+                <div>
+                    <wa-button type="submit" variant="success"
+                               th:text="${editing} ? 'Update' : 'Save'">
+                        Save
+                    </wa-button>
+                </div>
+
+            </form>
+        </div>
+    </wa-card>
+</main>
+
+<th:block layout:fragment="scripts">
+
+</th:block>
+</body>
+</html>

@@ -1,0 +1,7 @@
+name,type,activate
+Electronics,Normal,true
+Groceries,Normal,true
+Furniture,Normal,false
+Books,Normal,true
+Clothing,Normal,false
+USB Drive,Digital,false

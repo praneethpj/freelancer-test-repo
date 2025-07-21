@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Chat Assistant</title>
+    <link rel="stylesheet" th:href="@{/assets/contact/contact-form.css}">
+</head>
+<body>
+<main layout:fragment="content">
+    <div style="padding: 10px;">
+        <form id="chatForm" onsubmit="sendMessage(); return false;">
+            <input id="userInput" type="text" placeholder="Ask something..." style="width: 80%;" autocomplete="off" />
+            <button type="submit">Send</button>
+        </form>
+        <div id="chatOutput" style="margin-top: 10px; height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; background: #fafafa;"></div>
+    </div>
+</main>
+
+<th:block layout:fragment="scripts">
+    <script th:src="@{/assets/contact/contact-form.js}"></script>
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const chatOutput = document.getElementById('chatOutput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            chatOutput.innerHTML += `<div><b>You:</b> ${message}</div>`;
+            input.value = '';
+            chatOutput.scrollTop = chatOutput.scrollHeight;
+
+            try {
+                const res = await fetch('/chat-module/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const reply = await res.text();
+                chatOutput.innerHTML += `<div><b>Assistant:</b> ${reply}</div>`;
+                chatOutput.scrollTop = chatOutput.scrollHeight;
+            } catch (err) {
+                chatOutput.innerHTML += `<div style="color: red;"><b>Error:</b> Failed to get response.</div>`;
+            }
+        }
+    </script>
+</th:block>
+</body>
+</html>

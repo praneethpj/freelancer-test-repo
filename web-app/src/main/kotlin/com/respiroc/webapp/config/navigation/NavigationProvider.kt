@@ -44,7 +44,27 @@ class NavigationProvider {
                     NavigationSectionItem(label = "Suppliers", url = "/contact/supplier"),
                     NavigationSectionItem(label = "New Customers/Suppliers", url = "/contact/new")
                 )
+            ),
+
+            NavigationSection(
+                title = "Stock",
+                icon = "box",
+                items = listOf(
+                    NavigationSectionItem(
+                        label = "Item Types",
+                        url = "/item-type/list",
+                    ),
+                    NavigationSectionItem(
+                        label = "Stock Product",
+                        url = "/product-stock/list",
+                    ),
+                    NavigationSectionItem(
+                        label = "Chat with Stock",
+                        url = "/chat-module/open-chat-ui",
+                    )
+                )
             )
+
         )
     }
 }
